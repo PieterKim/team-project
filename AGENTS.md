@@ -1,22 +1,34 @@
-# 프로젝트 작업 지침
+# Repository Guidelines
 
-## 기본 원칙
+## Project Structure & Module Organization
 
-- 사용자가 한국어로 요청하면 한국어로 응답합니다.
-- 구현 전에 관련 파일과 현재 프로젝트 구조를 확인합니다.
-- 사용자가 요청한 범위 안에서만 변경하고, 기존 코드를 임의로 삭제하지 않습니다.
-- 변경 후에는 실행 방법과 확인 방법을 안내합니다.
+This repository is currently in the requirements and MVP-planning phase. The repository root contains contributor guidance, while `docs/requirements.md` defines the document-analysis and summarization service, its MVP scope, functional requirements, and acceptance scenarios. As implementation is added, keep runtime code under a clearly named source directory (for example, `src/`), tests under `tests/`, and reusable fixtures or sample documents under `tests/fixtures/`. Keep design notes and requirement updates in `docs/`.
 
-## 개발 흐름
+## Build, Test, and Development Commands
 
-요구사항 정의 → 기능 분해 → MVP 설계 → 구현 → 오류 분석 → 테스트 → 문서화 순서로 진행합니다.
+No build system, package manifest, or test runner is configured yet. Before adding implementation, document the chosen toolchain and expose standard commands such as:
 
-## 보안
+```text
+npm install       # install dependencies
+npm run dev       # start the local development server
+npm test          # run the automated test suite
+npm run lint      # check formatting and static analysis
+```
 
-- API 키, 토큰, 비밀번호를 코드에 직접 작성하지 않습니다.
-- 실제 환경 변수 값은 출력하지 않습니다.
-- 필요한 경우 `.env.example`에는 예시 값만 작성합니다.
+Use the project's actual commands once the stack is selected, and update this guide whenever they change.
 
-## 문서화
+## Coding Style & Naming Conventions
 
-프로젝트가 구현되면 README에 프로젝트 소개, 기술 스택, 설치·실행 방법, 사용 예시, 테스트 방법, 폴더 구조, 환경 변수, 한계점과 개선 방향을 정리합니다.
+Follow the formatter and linter selected for the implementation language; do not introduce competing style rules. Use two spaces for JSON/YAML and the language's standard indentation for source code. Prefer descriptive names: `camelCase` for JavaScript/TypeScript variables and functions, `PascalCase` for types and components, and `kebab-case` for document or route names. Keep file extraction, AI analysis, and result formatting as separate modules so each can be tested independently.
+
+## Testing Guidelines
+
+Tests should cover PDF/TXT validation, text extraction failures, AI/API failures, summary options, result rendering, copying, and Markdown/TXT downloads. Use descriptive names such as `document-upload.invalid-extension.test.*` and keep fixtures free of secrets or personal data. Every new feature should include a happy path and relevant error cases; record manual checks when automation is not yet available.
+
+## Commit & Pull Request Guidelines
+
+Use concise, imperative commit subjects with a clear scope, following the existing history's style (for example, `docs: add project requirements`). Pull requests should explain the user-facing or documentation change, list affected files, link the relevant requirement or issue, and include screenshots or manual verification steps for UI behavior. Keep unrelated refactors out of the same PR.
+
+## Security & Configuration Tips
+
+Never commit API keys, tokens, uploaded documents, or real personal information. Read secrets from environment variables and provide only placeholder names in `.env.example`. Do not log raw document contents or API credentials; sanitize errors and outputs before displaying them.
